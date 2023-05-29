@@ -42,9 +42,13 @@ fn create_chart(data: &[RowData], output_path: &str) -> Result<(), Box<dyn Error
 
     let x_values: Vec<u32> = (0..data.len() as u32).collect();
 
-
-    let time_values: Vec<String> = data.iter()
-        .map(|row: &RowData| NaiveTime::parse_from_str(&row.time, "%H:%M:%S%.3f").unwrap().to_string())
+    let time_values: Vec<String> = data
+        .iter()
+        .map(|row: &RowData| {
+            NaiveTime::parse_from_str(&row.time, "%H:%M:%S%.3f")
+                .unwrap()
+                .to_string()
+        })
         .collect();
 
     let start_time = NaiveTime::parse_from_str(&time_values[0], "%H:%M:%S%.3f").unwrap();
@@ -68,26 +72,47 @@ fn create_chart(data: &[RowData], output_path: &str) -> Result<(), Box<dyn Error
         .y_label_area_size(40)
         .build_cartesian_2d(0..data.len() as u32, 0.0..100.0)?;
 
-    chart.configure_mesh()
-    .y_desc("Usage (%)")
-    .y_labels(10)
-    .x_desc("Time")
-    .x_label_style(("sans-serif", 12).into_font().color(&BLACK))
-    .x_label_formatter(&|x| x_labels[*x as usize].clone())
-    .draw()?;
+    chart
+        .configure_mesh()
+        .y_desc("Usage (%)")
+        .y_labels(10)
+        .x_desc("Time")
+        .x_label_style(("sans-serif", 12).into_font().color(&BLACK))
+        .x_label_formatter(&|x| x_labels[*x as usize].clone())
+        .draw()?;
 
     chart
-        .draw_series(LineSeries::new(x_values.iter().zip(ram_values.iter()).map(|(x, y)| (*x, *y)), &BLUE))?
+        .draw_series(LineSeries::new(
+            x_values
+                .iter()
+                .zip(ram_values.iter())
+                .map(|(x, y)| (*x, *y)),
+            &BLUE,
+        ))?
         .label("RAM")
         .legend(|(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], &BLUE));
 
     chart
-        .draw_series(LineSeries::new(x_values.iter().zip(cpu_values.iter()).map(|(x, y)| (*x, *y)).collect::<Vec<_>>(), &RED))?
+        .draw_series(LineSeries::new(
+            x_values
+                .iter()
+                .zip(cpu_values.iter())
+                .map(|(x, y)| (*x, *y))
+                .collect::<Vec<_>>(),
+            &RED,
+        ))?
         .label("CPU")
         .legend(|(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], &RED));
 
     chart
-        .draw_series(LineSeries::new(x_values.iter().zip(gpu_values.iter()).map(|(x, y)| (*x, *y)).collect::<Vec<_>>(), &GREEN))?
+        .draw_series(LineSeries::new(
+            x_values
+                .iter()
+                .zip(gpu_values.iter())
+                .map(|(x, y)| (*x, *y))
+                .collect::<Vec<_>>(),
+            &GREEN,
+        ))?
         .label("GPU")
         .legend(|(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], &GREEN));
 
