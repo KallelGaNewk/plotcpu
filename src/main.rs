@@ -1,8 +1,10 @@
 use chrono::NaiveTime;
 use csv::Reader;
+use encoding_rs::{UTF_8, WINDOWS_1252};
 use plotters::prelude::*;
 use std::error::Error;
 use std::fs::File;
+use std::io::{Read, Write};
 
 struct RowData {
     time: String,
@@ -11,24 +13,77 @@ struct RowData {
     gpu: f64,
 }
 
+struct TableIndex {
+    time: usize,
+    ram: usize,
+    cpu: usize,
+    gpu: usize,
+}
+
 fn main() -> Result<(), Box<dyn Error>> {
-    let data = read_csv_file("table.csv")?;
+    // Based on sensors logging CSV export of HWiNFO64 v7.40-5000
+    convert_to_utf8("table.csv")?;
+    let data = read_csv_file(
+        "table.csv",
+        TableIndex {
+            time: 1,
+            ram: 7,
+            cpu: 42,
+            gpu: 213,
+        },
+    )?;
     create_chart(&data, "table.png")?;
     Ok(())
 }
 
-fn read_csv_file(file_path: &str) -> Result<Vec<RowData>, Box<dyn Error>> {
-    let file = File::open(file_path)?;
+// Function to convert all non-UTF8 characters from a string
+fn convert_to_utf8(filepath: &str) -> Result<(), Box<dyn Error>> {
+    let mut file = File::open(filepath)?;
+    let mut buffer = Vec::new();
+    file.read_to_end(&mut buffer)?;
+
+    let (cow, _, _) = WINDOWS_1252.decode(&buffer);
+    let (cow, _, _) = UTF_8.encode(&cow);
+
+    let mut file = File::create(filepath)?;
+    file.write_all(&cow)?;
+
+    Ok(())
+}
+
+fn read_csv_file(file_path: &str, indexes: TableIndex) -> Result<Vec<RowData>, Box<dyn Error>> {
+    let file = File::open(file_path);
+
+    if file.is_err() {
+        println!("[read_csv_file] File not found");
+        return Ok(Vec::new());
+    }
+
+    let file = file.unwrap();
+
     let mut reader = Reader::from_reader(file);
 
     let mut data = Vec::new();
     for result in reader.records() {
         let record = result?;
+
+        if record[indexes.time].eq("Time") {
+            println!("Time column: {:?}", record[indexes.time].to_string());
+            println!("RAM column: {:?}", record[indexes.ram].to_string());
+            println!("CPU column: {:?}", record[indexes.cpu].to_string());
+            println!("GPU column: {:?}", record[indexes.gpu].to_string());
+            continue;
+        }
+
+        if record[indexes.time].eq("") {
+            continue;
+        }
+
         let row_data = RowData {
-            time: record[0].to_string(),
-            ram: record[1].parse()?,
-            cpu: record[2].parse()?,
-            gpu: record[3].parse()?,
+            time: record[indexes.time].to_string(),
+            ram: record[indexes.ram].parse()?,
+            cpu: record[indexes.cpu].parse()?,
+            gpu: record[indexes.gpu].parse()?,
         };
         data.push(row_data);
     }

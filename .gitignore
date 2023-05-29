@@ -1,1 +1,5 @@
 /target
+
+# any input or output file from the software
+table.csv
+table.png
