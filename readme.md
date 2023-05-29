@@ -14,7 +14,7 @@ The PlotCPU is a Rust program that reads data from a CSV file containing system 
 - Rust programming language (>= 1.69)
 - Cargo package manager (usually comes with Rust)
 
-## Installation
+## Usage
 
 1. Clone the repository:
 
@@ -28,25 +28,17 @@ The PlotCPU is a Rust program that reads data from a CSV file containing system 
    cd plotcpu
    ```
 
-3. Run the project using Cargo:
+3. Place your CSV file containing the system monitoring data in the project directory.
 
-   ```bash
-   cargo run
-   ```
+4. Update the `main` function in `src/main.rs` with the correct column indexes for the time, RAM, CPU, and GPU fields in the CSV file (this should already be right). This can be done by modifying the `TableIndex` struct and its usage in the `read_csv_file` function.
 
-## Usage
-
-1. Place your CSV file containing the system monitoring data in the project directory.
-
-2. Update the `main` function in `src/main.rs` with the correct column indexes for the time, RAM, CPU, and GPU fields in the CSV file (this should already be right). This can be done by modifying the `TableIndex` struct and its usage in the `read_csv_file` function.
-
-3. Run the program using Cargo:
+5. Run the program using Cargo:
 
     ```bash
     cargo run
     ```
 
-4. Feel free to modify whatever you want to suit your needs.
+6. Feel free to modify whatever you want to suit your needs.
 
 ## Roadmap
 
