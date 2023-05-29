@@ -43,10 +43,10 @@ The PlotCPU is a Rust program that reads data from a CSV file containing system 
 ## Roadmap
 
 - [x] Auto-convert CSV file to UTF-8
-- [ ] Add command-line arguments to specify the input and output files
-- [ ] Add config file to specify the column indexes for the time, RAM, CPU, and GPU fields, chart title, labels, and colors
+- [ ] Command-line arguments to specify the input and output files
+- [ ] Config file to specify the column indexes for the time, RAM, CPU, and GPU fields, chart title, labels, and colors
 - [ ] Add functionality to compare multiple data sets
-- [ ] Add support for other system components (e.g. disk, network, etc.)
+- [ ] Support for other system components (e.g. disk, network, etc.)
 
 ## License
 
