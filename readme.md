@@ -15,7 +15,7 @@ The PlotCPU is a Rust program that reads data from a CSV file containing system 
 - Cargo package manager (usually comes with Rust)
 - [UbuntuMono Regular](https://design.ubuntu.com/font) (included in the project directory, install pls)*
 
-<font size="1">*If you don't want to use UbuntuMono, you can change the font in the `FONT_FAMILY` constant in `src/main.rs`.</font>
+<sub>*If you don't want to use UbuntuMono, you can change the font in the `FONT_FAMILY` constant in `src/main.rs`.</sub>
 
 ## Usage
 
