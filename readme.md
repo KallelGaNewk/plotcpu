@@ -9,6 +9,8 @@ The PlotCPU is a Rust program that reads data from a CSV file containing system 
 - Generates a line chart showing the usage of RAM, CPU, and GPU over time
 - Saves the chart as a PNG image
 
+![](table.png)
+
 ## Prerequisites
 
 - Rust programming language (>= 1.69)
