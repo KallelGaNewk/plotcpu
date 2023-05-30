@@ -17,7 +17,7 @@ The PlotCPU is a Rust program that reads data from a CSV file containing system 
 
 <font size="1">*If you don't want to use UbuntuMono, you can change the font in the `FONT_FAMILY` constant in `src/main.rs`.</font>
 
-## Installation
+## Usage
 
 1. Clone the repository:
 
@@ -31,33 +31,25 @@ The PlotCPU is a Rust program that reads data from a CSV file containing system 
    cd plotcpu
    ```
 
-3. Run the project using Cargo:
+3. Place your CSV file containing the system monitoring data in the project directory.
 
-   ```bash
-   cargo run
-   ```
+4. Update the `main` function in `src/main.rs` with the correct column indexes for the time, RAM, CPU, and GPU fields in the CSV file (this should already be right). This can be done by modifying the `TableIndex` struct and its usage in the `read_csv_file` function.
 
-## Usage
-
-1. Place your CSV file containing the system monitoring data in the project directory.
-
-2. Update the `main` function in `src/main.rs` with the correct column indexes for the time, RAM, CPU, and GPU fields in the CSV file (this should already be right). This can be done by modifying the `TableIndex` struct and its usage in the `read_csv_file` function.
-
-3. Run the program using Cargo:
+5. Run the program using Cargo:
 
     ```bash
     cargo run
     ```
 
-4. Feel free to modify whatever you want to suit your needs.
+6. Feel free to modify whatever you want to suit your needs.
 
 ## Roadmap
 
 - [x] Auto-convert CSV file to UTF-8
-- [ ] Add command-line arguments to specify the input and output files
-- [ ] Add config file to specify the column indexes for the time, RAM, CPU, and GPU fields, chart title, labels, and colors
+- [ ] Command-line arguments to specify the input and output files
+- [ ] Config file to specify the column indexes for the time, RAM, CPU, and GPU fields, chart title, labels, and colors
 - [ ] Add functionality to compare multiple data sets
-- [ ] Add support for other system components (e.g. disk, network, etc.)
+- [ ] Support for other system components (e.g. disk, network, etc.)
 
 ## License
 
